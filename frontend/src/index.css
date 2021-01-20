@@ -90,6 +90,10 @@ button.primary {
 button.block {
   width: 100%;
 }
+
+button.small {
+  font-size: 1.2rem;
+}
 /* Header */
 header a {
   color: #ffffff;
@@ -215,6 +219,10 @@ img.large {
   background-color: #ffe0e0e0;
 }
 
+.alert-success {
+  color: #20a020;
+  background-color: #eeffe0;
+}
 /* Form */
 
 .form {
@@ -228,7 +236,7 @@ img.large {
   margin: 1rem;
 }
 
-.form > label {
+.form label {
   margin: 1rem 0;
 }
 
@@ -273,4 +281,26 @@ img.large {
   border-top-color: #f08000;
   color: #f08000;
   font-weight: bold;
+}
+
+/* table */
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table tbody tr:nth-of-type(odd) {
+  background-color: #f4f4f4;
+}
+
+.table td,
+table th {
+  text-align: left;
+  border: 0.1rem solid #e4e4e4;
+  padding: 0.5rem;
+}
+
+.table button {
+  margin: 0 0.2rem;
 }

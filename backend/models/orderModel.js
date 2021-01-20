@@ -19,10 +19,17 @@ const orderSchema = new mongoose.Schema({
         country: { type: String, required: true },
     },
     paymentMethod: { type: String, required: true },
-    itemPrice: { type: String, required: true },
-    shippingPrice: { type: String, required: true },
-    taxPrice: { type: String, required: true },
-    totalPrice: { type: String, required: true },
+    paymentResult: {
+        id: String,
+        status: String,
+        update_time: String,
+        email_address: String,
+
+    },
+    itemsPrice: { type: Number, required: true },
+    shippingPrice: { type: Number, required: true },
+    taxPrice: { type: Number, required: true },
+    totalPrice: { type: Number, required: true },
     // product is a link to User in mongoDB
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     isPaid: { type: Boolean, default: false },

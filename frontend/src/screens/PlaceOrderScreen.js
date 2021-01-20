@@ -1,22 +1,37 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import CheckOutSteps from '../components/CheckOutSteps';
-
+import { ORDER_CREATE_RESET } from '../constants/orderConstants';
+import LoadingBox from '../components/LoadingBox';
+import MessageBox from '../components/MessageBox';
+import { createOrder } from '../actions/orderActions';
 
 export default function PlaceOrderScreen(props) {
     const cart = useSelector((state) => state.cart);
+    // if user gets to place order screen we check if he has a payment method in order for him to see this screen
     if (!cart.paymentMethod) {
         props.history.push('/payment');
     }
+    const orderCreate = useSelector(state => state.orderCreate);
+    const { loading, success, error, order } = orderCreate;
     const toPrice = (num) => Number(num.toFixed(2));
     cart.itemsPrice = toPrice(cart.cartItems.reduce((a, c) => a + c.qty * c.price, 0));
-    cart.shippingPrice = cart.itemPrice > 100 ? toPrice(0) : toPrice(10);
+    cart.shippingPrice = cart.itemsPrice > 100 ? toPrice(0) : toPrice(10);
     cart.taxPrice = toPrice(0.15 * cart.itemsPrice);
     cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice;
+    const dispatch = useDispatch();
+
     const PlaceOrderHandler = () => {
+        dispatch(createOrder({ ...cart, orderItems: cart.cartItems }))
         //Todo: dispatch shipping price
-    }
+    };
+    useEffect(() => {
+        if (success) {
+            props.history.push(`/order/${order._id}`);
+            dispatch({ type: ORDER_CREATE_RESET });
+        }
+    }, [dispatch, success, order, props.history]);
     return (
         <div>
             <CheckOutSteps step1 step2 step3 step4></CheckOutSteps>
@@ -112,13 +127,20 @@ export default function PlaceOrderScreen(props) {
                                 </div>
                             </li>
                             <li>
-                                <button type="button" onClick={PlaceOrderHandler} className="primary block" disabled={cart.cartItems.length === 0}>Place Order</button>
+                                <button
+                                    type="button"
+                                    onClick={PlaceOrderHandler}
+                                    className="primary block"
+                                    disabled={cart.cartItems.length === 0}
+                                >
+                                    Place Order
+                                </button>
                             </li>
+                            {loading && <LoadingBox></LoadingBox>}
+                            {error && <MessageBox variant="danger">{error} </MessageBox>}
                         </ul>
-
                     </div>
                 </div>
-
             </div>
         </div>
     )

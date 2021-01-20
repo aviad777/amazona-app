@@ -8,17 +8,14 @@ import MessageBox from '../components/MessageBox';
 export default function SigninScreen(props) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    console.log('props', props.location);
     // getting the search url for redirection.
     const redirect = props.location.search ? props.location.search.split('=')[1] : '/';
-    console.log('search=', props.location.search, 'redirect: ', redirect);
 
     const userSignin = useSelector((state) => state.userSignin);
     const { userInfo, error, loading } = userSignin;
 
     const dispatch = useDispatch();
     const submitHandler = (e) => {
-        console.log('signin');
         e.preventDefault();
         dispatch(signin(email, password));
     }
@@ -57,6 +54,8 @@ export default function SigninScreen(props) {
                         required
                         onChange={(e) => setPassword(e.target.value)}
                     ></input>
+
+
                 </div>
                 <div>
                     <label />

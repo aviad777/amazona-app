@@ -5,7 +5,7 @@ import { Redirect, Route } from 'react-router-dom';
 
 // this is a wrpapper on route and renders  a component only if he signs in
 
-export default function PrivateRoute({ component: Component, ...rest }) {
+export default function AdminRoute({ component: Component, ...rest }) {
     const userSignin = useSelector(state => state.userSignin);
     const { userInfo } = userSignin;
     return (

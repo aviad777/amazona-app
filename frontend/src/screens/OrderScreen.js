@@ -3,10 +3,10 @@ import { PayPalButton } from 'react-paypal-button-v2';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { detailsOrder, payOrder } from '../actions/orderActions';
+import { deliverOrder, detailsOrder, payOrder } from '../actions/orderActions';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
-import { ORDER_PAYMENT_RESET } from '../constants/orderConstants';
+import { ORDER_DELIVER_RESET, ORDER_PAYMENT_RESET } from '../constants/orderConstants';
 
 export default function OrderScreen(props) {
 
@@ -16,12 +16,23 @@ export default function OrderScreen(props) {
     const [sdkReady, setSdkReady] = useState(false);
     const orderDetails = useSelector(state => state.orderDetails);
     const { order, loading, error } = orderDetails;
+    const userSignin = useSelector(state => state.userSignin);
+    const { userInfo } = userSignin;
+
     const orderPay = useSelector(state => state.orderPay);
     const {
         loading: loadingPay,
         error: errorPay,
         success: successPay
     } = orderPay;
+    const orderDeliver = useSelector(state => state.orderDeliver);
+    const {
+        loading: loadingDeliver,
+        error: errorDeliver,
+        success: successDeliver
+    } = orderDeliver;
+
+
     const dispatch = useDispatch();
     useEffect(() => {
         const addPayPalScript = async () => {
@@ -40,10 +51,12 @@ export default function OrderScreen(props) {
         }
         console.log('order: ', order, ' successPay: ', successPay, ' SDK: ', sdkReady);
         // if order is not loaded
-        if (!order || successPay || (order && order._id !== orderId)) {
+        if (!order || successPay || successDeliver || (order && order._id !== orderId)) {
             console.log('checking order....');
             dispatch({ type: ORDER_PAYMENT_RESET });
-            dispatch(detailsOrder(orderId))
+            dispatch({ type: ORDER_DELIVER_RESET });
+
+            dispatch(detailsOrder(orderId));
         }
         else {
             //now we have the order
@@ -57,13 +70,16 @@ export default function OrderScreen(props) {
             }
         }
         //In the brackets are the dependecies of the function for refreshing after state is changed
-    }, [dispatch, orderId, order, sdkReady, successPay]);
+    }, [dispatch, orderId, order, sdkReady, successPay, successDeliver]);
 
     // payment result is the result we get from PAYPAL!!!!!
     const successPaymentHandler = (paymentResult) => {
         dispatch(payOrder(order, paymentResult))
     }
 
+    const deliverHandler = () => {
+        dispatch(deliverOrder(order._id));
+    }
 
     return loading ? (<LoadingBox></LoadingBox>) : error ? (<MessageBox variant="danger">{error}</MessageBox>)
         : (
@@ -84,7 +100,13 @@ export default function OrderScreen(props) {
                                     {order.shippingAddress.postalCode},
                                     {order.shippingAddress.country}
                                     </p>
-
+                                    {order.isDelivered ? (
+                                        <MessageBox variant="success">
+                                            Delivered at {order.deliveredAt}
+                                        </MessageBox>
+                                    ) : (
+                                            <MessageBox variant="danger">Not Paid</MessageBox>
+                                        )}
                                 </div>
                             </li>
                             <li>
@@ -187,6 +209,11 @@ export default function OrderScreen(props) {
                                         </li>
                                     )
                                 }
+                                {userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                                    <li>
+                                        <button type="button" className="primary block" onClick={deliverHandler}>Deliver Order</button>
+                                    </li>
+                                )}
 
                             </ul>
                         </div>

@@ -49,10 +49,8 @@ export default function OrderScreen(props) {
 
             document.body.appendChild(script);
         }
-        console.log('order: ', order, ' successPay: ', successPay, ' SDK: ', sdkReady);
         // if order is not loaded
         if (!order || successPay || successDeliver || (order && order._id !== orderId)) {
-            console.log('checking order....');
             dispatch({ type: ORDER_PAYMENT_RESET });
             dispatch({ type: ORDER_DELIVER_RESET });
 
@@ -92,13 +90,14 @@ export default function OrderScreen(props) {
                                 <div className="card card-body">
                                     <h2>
                                         Shipping
-                                </h2>
+                                    </h2>
                                     <p>
                                         <strong>Name:</strong>{order.shippingAddress.fullName} <br />
-                                        <strong>Address:</strong>{order.shippingAddress.address},
-                                    {order.shippingAddress.city},
-                                    {order.shippingAddress.postalCode},
-                                    {order.shippingAddress.country}
+                                        <strong>Address:</strong>
+                                        {order.shippingAddress.address},
+                                        {order.shippingAddress.city},
+                                        {order.shippingAddress.postalCode},
+                                        {order.shippingAddress.country}
                                     </p>
                                     {order.isDelivered ? (
                                         <MessageBox variant="success">

@@ -16,7 +16,6 @@ export const createOrder = (order) => async (dispatch, getState) => {
     //dont think we need payload here.
     dispatch({ type: ORDER_CREATE_REQUEST, payload: order });
     try {
-
         // get state returns all the store and from useSignin we are getting user info
         // for the authorization token
         const { userSignin: { userInfo } } = getState();
@@ -94,13 +93,14 @@ export const listOrderMine = () => async (dispatch, getState) => {
     }
 }
 
-export const listOrders = () => async (dispatch, getState) => {
+export const listOrders = ({ seller = '', pageNumber = '', }) => async (dispatch, getState) => {
     dispatch({ type: ORDER_LIST_REQUEST });
     const { userSignin: { userInfo } } = getState();
     try {
-        const { data } = await Axios.get('/api/orders', {
+        const { data } = await Axios.get(`/api/orders?pageNumber=${pageNumber}&seller=${seller}`, {
             headers: { Authorization: `bearer ${userInfo.token}` },
         })
+        console.log('page num:', pageNumber, ' data:', data);
         dispatch({ type: ORDER_LIST_SUCCESS, payload: data });
     } catch (error) {
         const message = error.response && error.response.data.message

@@ -40,6 +40,7 @@ footer {
 h1 {
   font-size: 1.8rem;
   padding: 1rem 0;
+  text-transform: capitalize;
 }
 h2 {
   font-size: 1.6rem;
@@ -128,6 +129,9 @@ a.brand {
 .row.top {
   align-items: flex-start;
 }
+.row.start {
+  justify-content: flex-start;
+}
 
 .col-1 {
   flex: 1 1 25rem;
@@ -136,10 +140,60 @@ a.brand {
   flex: 1 1 50rem;
 }
 
+.col-3 {
+  flex: 3 1 75rem;
+}
 .min-30 {
   min-width: 30rem;
 }
 
+.p-1 {
+  padding: 1rem;
+}
+
+/* Aside */
+
+aside {
+  position: fixed;
+  width: 30rem;
+  height: 100%;
+  background-color: #efefef;
+  z-index: 100;
+  transform: translateX(-30rem);
+  transition: 0.5s;
+}
+
+aside.open {
+  transform: translateX(0);
+}
+
+button.open-sidebar {
+  font-size: 3rem;
+  padding: 0.2rem 0.5rem;
+  margin: 0 0.5rem;
+  background: none;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+button.open-sidebar:hover {
+  border-color: #ffffff;
+}
+
+aside ul {
+  padding: 0;
+  list-style: none;
+}
+
+aside li {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+button.close-sidebar {
+  padding: 0.3 rem 0.8rem;
+}
 /* image */
 
 img {
@@ -303,4 +357,73 @@ table th {
 
 .table button {
   margin: 0 0.2rem;
+}
+
+/* carousel */
+
+.carousel .slide img {
+  max-width: 30rem;
+}
+
+/* Search */
+
+.search button {
+  border-radius: 0 0.5rem 0.5rem 0;
+  border-right: none;
+  margin-right: 0.5rem;
+}
+
+.search input {
+  border-radius: 0.5rem 0 0 0.5rem;
+  border-right: none;
+  margin-left: 0.5rem;
+}
+
+.active {
+  font-weight: bold;
+}
+
+/* map */
+
+.full-container {
+  margin: -1rem;
+  height: calc(100% + 2rem);
+}
+
+.map-input-box {
+  box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0.5rem auto;
+  width: 25rem;
+  height: 4rem;
+  display: flex;
+}
+
+.map-input-box input {
+  border-radius: 1rem 0 0 1rem;
+  border-right: 0;
+}
+
+.map-input-box button {
+  border-radius: 0 1rem 1rem 0;
+  border-right: 0;
+}
+
+/* pagination */
+
+.pagination a {
+  padding: 1rem;
+  margin: 0.5rem;
+  border-radius: 0.5rem;
+  border: 0.1rem #a4a4a4 solid;
+  font-size: 1.6rem;
+  font-family: helvetica, arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.pagination a.active {
+  font-weight: bold;
 }

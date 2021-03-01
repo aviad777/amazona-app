@@ -4,10 +4,11 @@ import Rating from './Rating';
 
 export default function Product(props) {
     const { product } = props;
+
     return (
         <div key={product._id} className="card">
             <Link to={`/product/${product._id}`}>
-                <img className="medium" src={product.image} alt={product.name} />
+                <img className="medium" src={`${product.image}`} alt={product.name} />
             </Link>
             <div className="card-body">
                 <Link to="product.html">
@@ -16,7 +17,22 @@ export default function Product(props) {
                     </h2>
                 </Link>
                 <Rating rating={product.rating} numReviews={product.numReviews}></Rating>
-                <div className="price">${product.price}</div>
+                <div className="row">
+
+                    <div className="price">${product.price}</div>
+                    <div>
+
+                        <Link to={`/seller/${product.seller._id}`}>
+
+                            {
+                                /* first seller is pointed to product model, which points to user ref, */
+                                /* and than the 2nd seller gives the seller obj from user model*/
+
+                                product.seller.name
+                            }
+                        </Link>
+                    </div>
+                </div>
             </div>
         </div>)
 }

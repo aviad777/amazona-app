@@ -33,6 +33,7 @@ export default function ProductEditScreen(props) {
             setName(product.name);
             setPrice(product.price);
             setImage(product.image);
+            console.log('image address', product.image);
             setCategory(product.category);
             setCountInStock(product.countInStock);
             setBrand(product.brand);
@@ -55,7 +56,7 @@ export default function ProductEditScreen(props) {
         bodyFormData.append('image', file);
         setLoadingUpload(true);
         try {
-            const { data } = await Axios.post('/api/uploads', bodyFormData, {
+            const { data } = await Axios.post('/api/uploads/s3', bodyFormData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${userInfo.token}`

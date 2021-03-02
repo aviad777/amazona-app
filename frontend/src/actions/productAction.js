@@ -19,7 +19,6 @@ export const listProducts = ({
     try {
         const { data } = await Axios.get(
             `/api/products?pageNumber=${pageNumber}&seller=${seller}&name=${name}&category=${category}&min=${min}&max=${max}&rating=${rating}&order=${order}`);
-        console.log('product list data:', data);
         dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
     }
     catch (error) {

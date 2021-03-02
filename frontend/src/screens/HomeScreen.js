@@ -17,7 +17,6 @@ export default function HomeScreen() {
 
     const { loading, error, products } = productList;
 
-    console.log('product list: ', productList);
 
     const userTopSellersList = useSelector(state => state.userTopSellersList);
     const { loading: loadingSellers, error: errorSellers, users: sellers } = userTopSellersList;

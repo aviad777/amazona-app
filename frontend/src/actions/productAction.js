@@ -62,8 +62,8 @@ export const createProduct = () => async (dispatch, getState) => {
     const { userSignin: { userInfo } } = getState();
     try {
 
-        //Axios injects url to current url if u dont give it the full url
-        const { data } = await Axios.post(`http://localhost:3000/api/products`, {}, {
+        //Axios injects url to current url if u dont give it the full url http://localhost:3000
+        const { data } = await Axios.post(`/api/products`, {}, {
             headers: { Authorization: `Bearer ${userInfo.token}` },
         });
 
@@ -84,7 +84,7 @@ export const updateProduct = (product) => async (dispatch, getState) => {
     dispatch({ type: PRODUCT_UPDATE_REQUEST, payload: product });
     const { userSignin: { userInfo } } = getState();
     try {
-        const { data } = await Axios.put(`http://localhost:3000/api/products/${product._id}`, product, {
+        const { data } = await Axios.put(`/api/products/${product._id}`, product, {
             headers: { Authorization: `bearer ${userInfo.token}` }
         })
         dispatch({ type: PRODUCT_UPDATE_SUCCESS, payload: data });
@@ -100,7 +100,7 @@ export const deleteProduct = (productId) => async (dispatch, getState) => {
     dispatch({ type: PRODUCT_DELETE_REQUEST, payload: productId });
     const { userSignin: { userInfo } } = getState();
     try {
-        const { data } = await Axios.delete(`http://localhost:3000/api/products/${productId}`, {
+        const { data } = await Axios.delete(`/api/products/${productId}`, {
             headers: { Authorization: `bearer ${userInfo.token}` }
         })
         dispatch({ type: PRODUCT_DELETE_SUCCESS });
@@ -120,7 +120,7 @@ export const createReview = (productId, review) => async (dispatch, getState) =>
     try {
 
         //Axios injects url to current url if u dont give it the full url
-        const { data } = await Axios.post(`http://localhost:3000/api/products/${productId}/reviews`, review, {
+        const { data } = await Axios.post(`/api/products/${productId}/reviews`, review, {
             headers: { Authorization: `Bearer ${userInfo.token}` },
         });
 

@@ -104,7 +104,7 @@ export default function OrderScreen(props) {
                                             Delivered at {order.deliveredAt}
                                         </MessageBox>
                                     ) : (
-                                            <MessageBox variant="danger">Not Paid</MessageBox>
+                                            <MessageBox variant="danger">Not Delivered</MessageBox>
                                         )}
                                 </div>
                             </li>

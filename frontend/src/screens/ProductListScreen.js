@@ -12,6 +12,7 @@ export default function ProductListScreen(props) {
     } = useParams();
 
     const sellerMode = props.match.path.indexOf('/seller') >= 0;
+
     const productList = useSelector(state => state.productList);
     const { loading, error, products, page, pages } = productList;
 
@@ -95,7 +96,7 @@ export default function ProductListScreen(props) {
                             <div className="row center pagination">
                                 {
                                     [...Array(pages).keys()].map(x => (
-                                        <Link className={(x + 1) === page ? 'active' : ''} key={x + 1} to={`/productlist/pageNumber/${x + 1}`}>
+                                        <Link className={(x + 1) === page ? 'active' : ''} key={x + 1} to={sellerMode ? `/productlist/seller/pageNumber/${x + 1}` : `/productlist/pageNumber/${x + 1}`}>
                                             {x + 1}
                                         </Link>
                                     ))

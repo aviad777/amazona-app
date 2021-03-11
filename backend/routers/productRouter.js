@@ -2,7 +2,7 @@ import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import data from '../data.js';
 import Product from '../models/productModel.js';
-import { isAdmin, isAuth, isSellerOrAdmin } from '../utils.js';
+import { isAdmin, isAuth, isSeller, isSellerOrAdmin } from '../utils.js';
 
 const productRouter = express.Router();
 
@@ -91,21 +91,25 @@ productRouter.get('/:id', expressAsyncHandler(async (req, res) => {
 }));
 
 
-productRouter.post('/', isAuth, isSellerOrAdmin, expressAsyncHandler(async (req, res) => {
+productRouter.post('/', isAuth, isSeller, expressAsyncHandler(async (req, res) => {
     const product = new Product({
-        name: 'sample name' + Date.now(),
+        name: req.body.name,
+        price: req.body.price,
+        image: req.body.image,
+        brand: req.body.brand,
+        category: req.body.category,
+        countInStock: req.body.countInStock,
+        description: req.body.description,
+        rating: req.body.rating,
+        numReviews: req.body.numReviews,
         seller: req.user._id,
-        image: 'images/p1.jpg',
-        price: 0,
-        category: 'sample category',
-        brand: 'sample brand',
-        countInStock: 0,
-        rating: 0,
-        numReviews: 0,
-        description: 'sample description',
+
     });
     const createdProduct = await product.save();
-    res.send({ message: 'Product Created', product: createdProduct });
+    if (createdProduct) {
+        return res.status(201).send({ message: 'Product Created', data: createdProduct });
+    }
+    return res.status(500).send({ message: 'Error in creating product' });
 }))
 
 
@@ -123,10 +127,12 @@ productRouter.put('/:id', isAuth, isSellerOrAdmin, expressAsyncHandler(async (re
         product.description = req.body.description;
 
         const updatedProduct = await product.save();
-        res.send({ message: 'Product Updated', product: updatedProduct });
-    } else {
-        res.status(404).send({ message: 'Product Not Found' });
+
+        if (updatedProduct) {
+            return res.status(200).send({ message: 'Product Updated', data: updatedProduct });
+        }
     }
+    return res.status(500).send({ message: 'Error in updating product' })
 
 }));
 

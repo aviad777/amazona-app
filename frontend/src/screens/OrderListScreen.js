@@ -25,16 +25,15 @@ export default function OrderListScreen(props) {
     const { userInfo } = userSignin;
     const dispatch = useDispatch();
     useEffect(() => {
-
         dispatch({ type: ORDER_DELTE_RESET })
         dispatch(listOrders({ seller: sellerMode ? userInfo._id : '', pageNumber }));
     }, [dispatch, successDelete, pageNumber]);
+
 
     const deleteHandler = (order) => {
         if (window.confirm('Are you sure to delete')) {
             dispatch(DeleteOrder(order._id));
         }
-
     }
 
     return (
@@ -88,7 +87,7 @@ export default function OrderListScreen(props) {
                                 <div className="row center pagination">
                                     {
                                         [...Array(pages).keys()].map(x => (
-                                            <Link className={(x + 1) === pageNumber ? 'active' : ''} key={x + 1} to={`/orderlist/pageNumber/${x + 1}`}>
+                                            <Link className={(x + 1) === pageNumber ? 'active' : ''} key={x + 1} to={sellerMode ? `/orderlist/seller/pageNumber/${x + 1}` : `/orderlist/pageNumber/${x + 1}`}>
                                                 {x + 1}
                                             </Link>
                                         ))

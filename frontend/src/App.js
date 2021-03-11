@@ -91,8 +91,8 @@ function App() {
                 </div>
               ) : (
 
-                  <Link to="/signin">Sign in</Link>
-                )
+                <Link to="/signin">Sign in</Link>
+              )
             }
             {userInfo && userInfo.isSeller && (
               <div className="dropdown">
@@ -198,10 +198,11 @@ function App() {
           <AdminRoute path="/orderlist/pageNumber/:pageNumber" component={OrderListScreen} exact></AdminRoute>
           <AdminRoute path="/userlist" component={UserListScreen}></AdminRoute>
           <AdminRoute path="/user/:id/edit" component={UserEditScreen}></AdminRoute>
-          <SellerRoute path="/productlist/seller" component={ProductListScreen} exact></SellerRoute>
           <SellerRoute path="/productlist/seller/pageNumber/:pageNumber" component={ProductListScreen} exact></SellerRoute>
-          <SellerRoute path="/orderlist/seller" component={OrderListScreen}></SellerRoute>
-          <SellerRoute path="/orderlist/pageNumber/:pageNumber/seller" component={OrderListScreen} exact></SellerRoute>
+          <SellerRoute path="/productlist/seller" component={ProductListScreen} exact></SellerRoute>
+          <SellerRoute path="/orderlist/seller/pageNumber/:pageNumber" component={OrderListScreen} exact></SellerRoute>
+          <SellerRoute path="/orderlist/seller" component={OrderListScreen} exact></SellerRoute>
+
           <Route path="/" component={HomeScreen} exact></Route>
         </main>
         <footer className="row center">

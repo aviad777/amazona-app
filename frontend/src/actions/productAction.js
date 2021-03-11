@@ -1,5 +1,5 @@
 import Axios from "axios";
-import { PRODUCT_DELETE_REQUEST, PRODUCT_DELETE_FAIL, PRODUCT_DELETE_SUCCESS, PRODUCT_UPDATE_REQUEST, PRODUCT_UPDATE_FAIL, PRODUCT_UPDATE_SUCCESS, PRODUCT_CREATE_REQUEST, PRODUCT_CREATE_SUCCESS, PRODUCT_CREATE_FAIL, PRODUCT_CREATE_RESET, PRODUCT_DETAILS_FAIL, PRODUCT_DETAILS_REQUEST, PRODUCT_DETAILS_SUCCESS, PRODUCT_LIST_FAIL, PRODUCT_LIST_REQUEST, PRODUCT_LIST_SUCCESS, PRODUCT_CATEGORY_LIST_REQUEST, PRODUCT_CATEGORY_LIST_SUCCESS, PRODUCT_CATEGORY_LIST_FAIL, PRODUCT_REVIEW_CREATE_REQUEST, PRODUCT_REVIEW_CREATE_SUCCESS, PRODUCT_REVIEW_CREATE_FAIL } from "../constants/productConstants"
+import { PRODUCT_DELETE_REQUEST, PRODUCT_DELETE_FAIL, PRODUCT_DELETE_SUCCESS, PRODUCT_UPDATE_REQUEST, PRODUCT_UPDATE_FAIL, PRODUCT_UPDATE_SUCCESS, PRODUCT_CREATE_REQUEST, PRODUCT_CREATE_SUCCESS, PRODUCT_CREATE_FAIL, PRODUCT_CREATE_RESET, PRODUCT_DETAILS_FAIL, PRODUCT_DETAILS_REQUEST, PRODUCT_DETAILS_SUCCESS, PRODUCT_LIST_FAIL, PRODUCT_LIST_REQUEST, PRODUCT_LIST_SUCCESS, PRODUCT_CATEGORY_LIST_REQUEST, PRODUCT_CATEGORY_LIST_SUCCESS, PRODUCT_CATEGORY_LIST_FAIL, PRODUCT_REVIEW_CREATE_REQUEST, PRODUCT_REVIEW_CREATE_SUCCESS, PRODUCT_REVIEW_CREATE_FAIL, PRODUCT_SAVE_REQUEST, PRODUCT_SAVE_SUCCESS, PRODUCT_SAVE_FAIL } from "../constants/productConstants"
 
 export const listProducts = ({
     pageNumber = '',
@@ -133,5 +133,31 @@ export const createReview = (productId, review) => async (dispatch, getState) =>
         dispatch({
             type: PRODUCT_REVIEW_CREATE_FAIL, payload: message
         })
+    }
+}
+
+export const saveProduct = (product) => async (dispatch, getState) => {
+    try {
+        dispatch({ type: PRODUCT_SAVE_REQUEST, payload: product })
+        const {
+            userSignin: { userInfo },
+        } = getState();
+        if (!product._id) {
+            const { data } = await Axios.post('/api/products', product, {
+                headers: {
+                    Authorization: 'Bearer ' + userInfo.token,
+                }
+            })
+            dispatch({ type: PRODUCT_SAVE_SUCCESS, payload: data });
+        } else {
+            const { data } = await Axios.put('/api/products' + product._id, product, {
+                headers: {
+                    Authorization: 'Bearer ' + userInfo.token,
+                }
+            })
+            dispatch({ type: PRODUCT_SAVE_SUCCESS, payload: data });
+        }
+    } catch (error) {
+        dispatch({ type: PRODUCT_SAVE_FAIL, payload: error.message });
     }
 }
